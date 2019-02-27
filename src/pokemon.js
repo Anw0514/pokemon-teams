@@ -10,11 +10,24 @@ class Pokemon {
     addLi() {
         let li = document.createElement('li')
         li.innerHTML = `${this.nickname} (${this.species})  `
+        li.id = `${this.id}-${this.trainerId}`
         let btn = document.createElement('button')
-        btn.id = `${this.id}-${this.trainerId}`
         btn.innerHTML = 'release'
+        btn.addEventListener('click', () => {this.release()})
         li.appendChild(btn)
         return li
+    }
+
+    release() {
+        this.removeLi()
+        fetch(Pokemon.api + `/${this.id}`, {
+            method: 'DELETE'
+        })
+    }
+
+    removeLi() {
+        let li = document.getElementById(`${this.id}-${this.trainerId}`)
+        li.parentNode.removeChild(li)
     }
 
     static newPokemon(trainer) {
